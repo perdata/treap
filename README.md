@@ -9,7 +9,7 @@ Package treap implements a persistent sorted set datastructure using a combinati
 
 The algorithms are mostly based on [Fast Set Operations Using Treaps](https://www.cs.cmu.edu/~scandal/papers/treaps-spaa98.pdf)
 
-Although the package is oriented towards ordered sets, it is simple to convert it to work as a persistent map.
+Although the package is oriented towards ordered sets, it is simple to convert it to work as a persistent map.  There is a working [example](https://godoc.org/github.com/perdata/treap#example-package--OrderedMap) showing how to do this.
 
 
 ##  Benchmark stats
