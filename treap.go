@@ -21,13 +21,27 @@
 //
 // Benchmark
 //
+// The most interesting benchmark is the performance of insert where a
+// single random key is inserted into a 5k sized map.  As the example
+// shows, the treap structure does well here as opposed to a regular
+// persistent map (which involves full copying).  This benchmark does not
+// take into account the fact that the regular maps are not sorted unlike
+// treaps.
+//
+// The intersection benchmark compares the case where two 10k sets with
+// 5k in common being interesected. The regular persistent array is about
+// 30% faster but this is still respectable showing for treaps.
+//
 //    $ go test --bench=. -benchmem
 //    goos: darwin
 //    goarch: amd64
 //    pkg: github.com/perdata/treap
-//    BenchmarkUnion-4             	    1000	   1456648 ns/op	  939846 B/op	   19580 allocs/op
-//    BenchmarkIntersection-4      	     500	   3112224 ns/op	 1719838 B/op	   35836 allocs/op
-//     BenchmarkIntersectionMap-4   	    1000	   1354798 ns/op	  364991 B/op	      84 allocs/op
+//    BenchmarkInsert-4                   	 1000000	      2347 ns/op	    1719 B/op	      36 allocs/op
+//    BenchmarkInsertRegularMap-4         	    2000	    890745 ns/op	  336311 B/op	       8 allocs/op
+//    BenchmarkIntersection-4             	     500	   3125772 ns/op	 1719838 B/op	   35836 allocs/op
+//    BenchmarkIntersectionRegularMap-4   	     500	   2436519 ns/op	  718142 B/op	     123 allocs/op
+//    BenchmarkUnion-4                    	    1000	   1451047 ns/op	  939846 B/op	   19580 allocs/op
+//    BenchmarkDiff-4                     	     500	   3280823 ns/op	 1742080 B/op	   36298 allocs/op
 //    PASS
 //
 package treap
@@ -163,6 +177,29 @@ func (n *Node) Intersection(other *Node, c Comparer) *Node {
 // Delete removes a node if it exists.
 func (n *Node) Delete(v interface{}, c Comparer) *Node {
 	left, _, right := n.Split(v, c)
+	return left.join(right)
+}
+
+// Diff finds all elements of current treap which aren't present in
+// the other heap
+func (n *Node) Diff(other *Node, c Comparer) *Node {
+	if n == nil || other == nil {
+		return n
+	}
+
+	// TODO -- use  count
+	if n.Priority >= other.Priority {
+		left, dupe, right := other.Split(n.Value, c)
+		left, right = n.Left.Diff(left, c), n.Right.Diff(right, c)
+		if dupe != nil {
+			return left.join(right)
+		}
+		return &Node{n.Value, n.Priority, left, right}
+	}
+
+	left, _, right := n.Split(other.Value, c)
+	left = left.Diff(other.Left, c)
+	right = right.Diff(other.Right, c)
 	return left.join(right)
 }
 
