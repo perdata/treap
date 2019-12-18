@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/perdata/treap/branch/master/graph/badge.svg)](https://codecov.io/gh/perdata/treap)
 [![GoReportCard](https://goreportcard.com/badge/github.com/perdata/treap)](https://goreportcard.com/report/github.com/perdata/treap)
 
-Package treap implements a persistent sorted set datastructure using a combination tree/heap or [treap](https://en.wikipedia.org/wiki/Treap).
+Package treap implements a [persistent](https://en.wikipedia.org/wiki/Persistent_data_structure) sorted set datastructure using a combination tree/heap or [treap](https://en.wikipedia.org/wiki/Treap).
 
 The algorithms are mostly based on [Fast Set Operations Using Treaps](https://www.cs.cmu.edu/~scandal/papers/treaps-spaa98.pdf)
 
