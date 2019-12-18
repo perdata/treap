@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/perdata/treap/branch/master/graph/badge.svg)](https://codecov.io/gh/perdata/treap)
 [![GoReportCard](https://goreportcard.com/badge/github.com/perdata/treap)](https://goreportcard.com/report/github.com/perdata/treap)
 
-Package treap implements a [persistent](https://en.wikipedia.org/wiki/Persistent_data_structure) sorted set datastructure using a combination tree/heap or [treap](https://en.wikipedia.org/wiki/Treap).
+Package treap implements an immutabe sorted set datastructure using a combination tree/heap or [treap](https://en.wikipedia.org/wiki/Treap).
 
 The algorithms are mostly based on [Fast Set Operations Using Treaps](https://www.cs.cmu.edu/~scandal/papers/treaps-spaa98.pdf)
 
@@ -17,12 +17,12 @@ Although the package is oriented towards ordered sets, it is simple to convert i
 The most interesting benchmark is the performance of insert where a
 single random key is inserted into a 5k sized map.  As the example
 shows, the treap structure does well here as opposed to a regular
-persistent map (which involves full copying).  This benchmark does not
+immutable map (using full copying).  This benchmark does not
 take into account the fact that the regular maps are not sorted unlike
 treaps. 
 
 The intersection benchmark compares the case where two 10k sets with
-5k in common being interesected. The regular persistent array is about
+5k in common being interesected. The regular map is about
 30% faster but this is still respectable showing for treaps. 
 
 
